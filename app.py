@@ -15,7 +15,7 @@ cursor = db.cursor()
 
 @app.route("/")
 def index():
-    return render_template("home.html")
+    return render_template("https://karthikkuncha45.netlify.app/home.html")
 
 # Route to store visitor's name and redirect to home.html
 @app.route("/home", methods=["POST"])
