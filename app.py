@@ -17,7 +17,7 @@ db = psycopg2.connect(
     "database": "student_db_tc30",
     "user": "student_db_tc30_user",
     "password": "x3WA2Wfqeg9yOzY3BV7P7INwJxWrimLh"
-}
+)
 
 cursor = db.cursor()
 
