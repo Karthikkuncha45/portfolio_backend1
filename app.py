@@ -1,23 +1,31 @@
 from flask import Flask, render_template, request, redirect
-import mysql.connector
 from datetime import datetime
+import psycopg2
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 
-# MySQL Connection
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="Karthik@143",
-    database="mydb"
-)
+# PostgreSQL Connection using credentials from .env
+db = psycopg2.connect(
+    
+    "host": "dpg-d071dajuibrs73f1kcs0-a.oregon-postgres.render.com",
+    "port": "5432",
+    "database": "student_db_tc30",
+    "user": "student_db_tc30_user",
+    "password": "x3WA2Wfqeg9yOzY3BV7P7INwJxWrimLh"
+}
+
 cursor = db.cursor()
 
 @app.route("/")
 def index():
-    return render_template("https://karthikkuncha45.netlify.app/home.html")
+    # Redirect to Netlify site
+    return redirect("https://karthikkuncha45.netlify.app/home.html")
 
-# Route to store visitor's name and redirect to home.html
 @app.route("/home", methods=["POST"])
 def home():
     visitor_name = request.form["visitor_name"].strip()
@@ -31,7 +39,6 @@ def home():
         db.rollback()
         return f"Database error: {str(e)}", 500
 
-# Route to handle contact form submission
 @app.route("/submit-form", methods=["GET", "POST"])
 def submit_form():
     if request.method == "POST":
@@ -40,7 +47,7 @@ def submit_form():
         message = request.form.get("message").strip()
         submit_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Server-side validation
+        # Validation
         if not name or not phone or not message:
             return "All fields are required.", 400
 
@@ -53,18 +60,16 @@ def submit_form():
                 (name, phone, message, submit_time)
             )
             db.commit()
-            return redirect("/home")  # Redirect to home page after successful submission
+            return redirect("/home")
         except Exception as e:
             db.rollback()
             return f"Database error: {str(e)}", 500
-    
-    # If the user accesses this route with GET, redirect them to home instead of error
+
     return redirect("/home")
 
-@app.route("/education", methods=["GET","POST"])
+@app.route("/education", methods=["GET", "POST"])
 def education():
     return render_template("education.html")
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run(debug=True)
