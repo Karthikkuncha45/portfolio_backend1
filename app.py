@@ -12,11 +12,11 @@ app = Flask(__name__)
 # PostgreSQL Connection using credentials from .env
 db = psycopg2.connect(
     
-    "host": "dpg-d071dajuibrs73f1kcs0-a.oregon-postgres.render.com",
-    "port": "5432",
-    "database": "student_db_tc30",
-    "user": "student_db_tc30_user",
-    "password": "x3WA2Wfqeg9yOzY3BV7P7INwJxWrimLh"
+        host="dpg-d071dajuibrs73f1kcs0-a.oregon-postgres.render.com",
+        port="5432",
+        dbname="student_db_tc30",
+        user="student_db_tc30_user",
+        password="x3WA2Wfqeg9yOzY3BV7P7INwJxWrimLh"
 )
 
 cursor = db.cursor()
